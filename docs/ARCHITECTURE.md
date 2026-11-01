@@ -1,24 +1,38 @@
 # Architecture
 
-## High-level flow
+## Navigation and manipulation flow
 
-1. Sensors provide LiDAR, IMU, and depth information to the robot stack.
-2. ROS / ROS 2 handles localisation, mapping, transforms, and navigation.
-3. Nav2 executes mobile navigation toward task locations.
-4. A task coordination layer determines when the manipulation stage should begin.
-5. MQTT is used to exchange commands/status with the robotic arm.
-6. RViz/RViz2 and simulation tools are used for visualisation and debugging.
+The retained project workspace uses a ROS 1 Noetic simulation for the mobile-manipulator workflow.
+
+```mermaid
+flowchart LR
+    A[Laser Scan] --> B[AMCL / Localisation]
+    C[Map Server] --> B
+    B --> D[TF]
+    D --> E[move_base]
+    F[Costmaps] --> E
+    E --> G[Base Velocity Controller]
+    G --> H[Mobile Manipulator]
+    H --> I[MoveIt / Arm Planning]
+```
 
 ## Main interfaces
 
 | Interface | Purpose |
 | --- | --- |
-| LiDAR -> ROS | Mapping and obstacle information |
-| IMU -> ROS | Motion/orientation sensing |
-| RealSense -> ROS | Depth perception |
+| LaserScan | Obstacle sensing and localisation input |
+| IMU | Motion/orientation sensing in simulation |
+| Map Server | Publishes the saved environment map |
+| AMCL | Particle-filter localisation |
 | TF | Coordinate-frame relationships |
-| Nav2 | Navigation and goal execution |
-| MQTT | AMR-to-arm communication |
-| Jetson | Edge compute platform |
+| move_base | Goal-based mobile navigation |
+| costmap_2d | Global/local obstacle representation |
+| MoveIt | Robotic-arm planning and manipulation |
+| Gazebo | Robot and environment simulation |
+| RViz | Navigation and planning visualisation |
 
-More detailed diagrams and launch/configuration references will be added as the original workspace is organised.
+## ROS 2 experiment
+
+A later demonstration uses **ROS 2 Humble** and lifecycle-managed navigation components. It is documented separately from the original ROS 1 simulation so the two development stages remain clear.
+
+More implementation detail will be added as the original workspace is curated for public release.
