@@ -2,19 +2,36 @@
 
 A robotics integration project focused on coordinating an **Autonomous Mobile Robot (AMR)** with a robotic manipulator for warehouse-style navigation and manipulation tasks.
 
-This repository is based on work from my Master's project at SRH University of Applied Sciences in Berlin. The original project material includes a **ROS 1 Noetic** mobile-manipulator simulation and later **ROS 2 Humble** navigation experiments.
+This repository is based on work from my Master's thesis at SRH University of Applied Sciences in Berlin. The project was implemented primarily in **ROS 1 Noetic**, with selected **ROS 2 Humble** examples used to demonstrate comparable navigation and manipulation concepts.
 
-> **Repository status:** I am cleaning the original project workspace before publishing it. Only project-specific files and clearly attributed material will be added.
+> **Repository status:** I am curating the original project workspace for public release. Only project-specific files and clearly attributed material are included.
 
 ## Project Overview
 
 The project explores how mobile navigation and robotic manipulation can be combined in one workflow:
 
 1. Navigate the mobile robot through a warehouse-style environment
-2. Localise using map and laser data
-3. Plan and execute goals
+2. Localise using map and LiDAR data
+3. Plan and execute navigation goals
 4. Coordinate navigation with robotic-arm manipulation
 5. Test and debug the complete system in Gazebo and RViz
+
+## Visual Evidence
+
+### Navigation and localisation in RViz
+![2D Nav Goal in RViz](media/fig25_navigation_rviz.png)
+
+*Figure from the thesis showing a 2D navigation goal and the mobile robot's navigation state in RViz.*
+
+### Robotic-arm motion planning with MoveIt
+![MoveIt arm goal](media/fig35_moveit_goal.jpg)
+
+*Figure from the thesis showing the manipulator moving toward a configured goal pose using MoveIt.*
+
+### ROS 2 Humble demonstration
+![ROS2 demo pickup](media/fig40_ros2_demo_pickup.jpg)
+
+*Figure from the thesis showing the ROS 2 Humble pick-and-place demonstration used for comparison with the ROS Noetic workflow.*
 
 ## What I Worked On
 
@@ -26,7 +43,7 @@ The project explores how mobile navigation and robotic manipulation can be combi
 - Used **MoveIt** for robotic-arm motion planning and manipulation experiments
 - Tested goal execution and navigation in a warehouse-style simulation
 - Investigated navigation, localisation, transform, controller, and integration issues
-- Explored a later **ROS 2 Humble** navigation setup using lifecycle-managed nodes
+- Explored a later **ROS 2 Humble** setup using Nav2, lifecycle-managed nodes, ros2_control, and MoveIt 2 concepts
 
 ## Technology Stack
 
@@ -35,9 +52,10 @@ The project explores how mobile navigation and robotic manipulation can be combi
 - ROS 2 Humble
 - Gazebo
 - RViz / RViz2
-- MoveIt
+- MoveIt / MoveIt 2
 - AMCL
 - move_base
+- Nav2 concepts
 - TF
 - costmap_2d
 
@@ -50,8 +68,8 @@ The project explores how mobile navigation and robotic manipulation can be combi
 ### Robot & Sensor Interfaces
 - LiDAR
 - IMU
-- Mobile robot base
-- Robotic manipulator
+- Differential-drive mobile base
+- 6-DoF robotic manipulator
 - ROS controllers
 
 ## System Flow
@@ -66,7 +84,7 @@ flowchart LR
     F --> G[Manipulation / MoveIt]
 ```
 
-The project was developed iteratively, with navigation and manipulation tested independently before being combined in the same simulated environment.
+The project was developed iteratively, with navigation and manipulation tested independently before being combined into the same simulated warehouse workflow.
 
 ## Original Project Evidence
 
@@ -79,42 +97,31 @@ The retained project workspace contains:
 - MoveIt configuration
 - Gazebo warehouse environment
 - saved maps and RViz configuration
-- navigation and manipulation demonstration videos
+- local navigation and manipulation demonstration recordings
 
-A separate ROS 2 Humble demonstration also shows map-server lifecycle management and navigation in a warehouse environment.
-
-## Demo Material
-
-I retained four project demonstrations:
-
-- **Setup and Navigation**: Gazebo + RViz navigation setup
-- **Send Goal Node**: goal selection and mobile robot navigation
-- **Manipulation**: MoveIt-based robotic-arm motion planning
-- **ROS 2 Example**: ROS 2 Humble navigation/lifecycle demonstration
-
-Selected screenshots will be added to the repository alongside the cleaned project files.
+A separate ROS 2 Humble example was also used to compare navigation, lifecycle management, control, and manipulation concepts with the primary ROS Noetic workflow.
 
 ## Engineering Challenges
 
 ### Localisation and navigation
-AMCL, map configuration, sensor data, and coordinate frames had to stay consistent for reliable navigation.
+AMCL, map configuration, sensor data, and coordinate frames had to remain consistent for reliable navigation.
 
 ### Costmap tuning
 Obstacle range, ray-tracing range, robot footprint, inflation radius, and local/global costmap behaviour were tuned for the simulated mobile platform.
 
 ### TF and robot frames
-Transform relationships between the map, odometry, base, laser, and other robot frames were important for localisation and planning.
+Transform relationships between the map, odometry, base, laser, and manipulator frames were important for localisation, planning, and visualisation.
 
 ### Manipulation
-MoveIt was used to configure and test robotic-arm planning inside the mobile-manipulator simulation.
+MoveIt was configured for kinematics, collision checking, trajectory planning, and goal-pose testing inside the mobile-manipulator simulation.
 
 ### System-level debugging
-The main learning came from debugging interactions between navigation, sensing, controllers, transforms, and manipulation rather than treating each subsystem separately.
+The main engineering challenge was debugging interactions between navigation, sensing, controllers, transforms, and manipulation rather than treating each subsystem separately.
 
 ## Repository Structure
 
 ```text
-ros2-amr-robot-arm/
+amr-robot-arm-integration/
 ├── README.md
 ├── docs/
 │   ├── ARCHITECTURE.md
